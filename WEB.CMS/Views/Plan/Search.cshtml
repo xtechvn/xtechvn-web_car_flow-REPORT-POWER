@@ -1,0 +1,118 @@
+﻿@{
+    Layout = null;
+}
+@using Entities.ViewModels
+@model IEnumerable<PlanGridViewModel>
+
+@{
+    void RenderMonthRow(int monthId, int year, int month, List<PlanGridViewModel> childs)
+    {
+        <tr class="row-parent">
+            <td class="color-main">
+                <!-- nút edit theo MonthId -->
+                <a class="cursor-pointer" onclick="_menu.ShowAddOrUpdate('@monthId')" title="Chỉnh sửa Plan">
+                    <i class="icon-edit"></i>
+                </a>
+            </td>
+
+            <td class="text-center">
+                <b>@month</b>
+            </td>
+
+            <td colspan="2" class="gray">
+                @($"{childs.Count} chi nhánh")
+            </td>
+
+            <td class="text-right">
+                <!-- nút add thêm chi nhánh cho tháng này (mở popup edit theo month) -->
+                <a style="text-decoration:auto!important;font-size:20px!important;"
+                   onclick="_menu.ShowAddOrUpdate('@monthId')" title="Thêm/Sửa chi nhánh">
+                    +
+                </a>
+            </td>
+        </tr>
+
+        foreach (var c in childs)
+        {
+            <tr class="row-child">
+                <td></td>
+                <td>
+                    <div style="padding-left:20px;">
+                        └ @c.BranchName
+                    </div>
+                </td>
+                <td>@((int)c.WeightValue) kg</td>
+
+
+                <td class="gray">CN: @c.Type</td>
+                <td>
+                    <a class="cursor-pointer" onclick="_menu.OnDeleteWeight('@c.WeightId')" title="Xóa dòng chi nhánh">
+                        <i class="icon-del"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+}
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th style="width: 60px;">#</th>
+            <th style="width: 200px;">Tháng</th>
+            <th style="width: 140px;">Trọng lượng (kg)</th>
+
+            <th>Ghi chú</th>
+            <th style="width: 120px;">Tác vụ</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            // group theo MonthId
+            var groups = Model
+            .GroupBy(x => new { x.MonthId, x.YearValue, x.MonthValue })
+            .OrderBy(g => g.Key.YearValue)   // năm tăng dần
+            .ThenBy(g => g.Key.MonthValue)   // tháng tăng dần
+            .ToList();
+
+
+            foreach (var g in groups)
+            {
+                RenderMonthRow(
+                g.Key.MonthId,
+                g.Key.YearValue,
+                g.Key.MonthValue,
+                g.OrderBy(x => x.Type).ToList()
+                );
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">
+                    <div class="search-null center mt40 mb40">
+                        <div class="mb24">
+                            <img src="/images/graphics/icon-search.png" alt="">
+                        </div>
+                        <h2 class="title txt_24">Không tìm thấy kết quả</h2>
+                        <div class="gray">Chúng tôi không tìm thấy thông tin mà bạn cần, vui lòng thử lại</div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    /* Nhìn giống cây hơn */
+    .row-parent td {
+        font-weight: 600;
+        background: #fafafa;
+    }
+
+    .row-child td {
+        background: #fff;
+    }
+</style>

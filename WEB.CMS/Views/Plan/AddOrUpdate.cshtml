@@ -1,0 +1,346 @@
+﻿@{
+    Layout = null;
+}
+@using Entities.Models
+@using Entities.ViewModels
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model PlanUpsertViewModel
+
+@{
+    var branches = ViewBag.Branches as IEnumerable<AllCode> ?? Enumerable.Empty<AllCode>();
+    if (Model.Items == null) Model.Items = new List<PlanItemVM>();
+    if (Model.Items.Count == 0) Model.Items.Add(new PlanItemVM());
+}
+
+<style>
+    /* ===== Plan popup UI ===== */
+    .plan-modal {
+        padding: 8px 8px 4px;
+    }
+
+    .plan-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 6px 0 14px;
+    }
+
+    .plan-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #111827;
+        margin: 0;
+        letter-spacing: .2px;
+    }
+
+    .plan-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        line-height: 1;
+        color: #6b7280;
+    }
+
+        .plan-close:hover {
+            background: #f9fafb;
+            color: #111827;
+        }
+
+    .plan-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 18px;
+        margin-bottom: 14px;
+    }
+
+    .plan-label {
+        display: block;
+        font-weight: 650;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+        .plan-label span {
+            color: #ef4444;
+        }
+
+    .plan-input, .plan-select {
+        width: 100%;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        padding: 0 12px;
+        font-size: 15px;
+        outline: none;
+        background: #fff;
+    }
+
+        .plan-input:focus, .plan-select:focus {
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 4px rgba(59,130,246,.15);
+        }
+
+    .plan-section {
+        margin-top: 6px;
+        border-top: 1px solid #eef2f7;
+        padding-top: 14px;
+    }
+
+    .plan-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+        .plan-section-title h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 750;
+            color: #111827;
+        }
+
+    .plan-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .plan-row {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr auto;
+        gap: 12px;
+        align-items: end;
+        padding: 10px;
+        border: 1px solid #eef2f7;
+        border-radius: 14px;
+        background: #fff;
+    }
+
+    .icon-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        background: #fff;
+        cursor: pointer;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .icon-btn:hover {
+            background: #f9fafb;
+        }
+
+        .icon-btn.add {
+            border-color: #dbeafe;
+        }
+
+        .icon-btn.remove {
+            border-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+    .plan-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 14px;
+        border-top: 1px solid #eef2f7;
+    }
+
+    .btn {
+        height: 44px;
+        min-width: 120px;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 15px;
+        padding: 0 16px;
+    }
+
+    .btn-cancel {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+        .btn-cancel:hover {
+            background: #e5e7eb;
+        }
+
+    .btn-save {
+        background: #5a7d00;
+        border-color: #5a7d00;
+        color: #fff;
+    }
+
+        .btn-save:hover {
+            filter: brightness(.95);
+        }
+</style>
+
+<div class="plan-modal">
+   
+
+    <form id="form_plan" onsubmit="return false" autocomplete="off">
+        <input type="hidden" asp-for="MonthId" />
+
+        <!-- Year / Month -->
+        <div class="plan-grid-2">
+            <div>
+                <label class="plan-label">Năm <span>*</span></label>
+                <input class="plan-input" type="number" asp-for="YearValue" placeholder="VD: 2026" />
+            </div>
+
+            <div>
+                <label class="plan-label">Tháng <span>*</span></label>
+                <select class="plan-select" asp-for="MonthValue">
+                    @for (int m = 1; m <= 12; m++)
+                    {
+                        <option value="@m">@m</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <!-- Branch/Weight rows -->
+        <div class="plan-section">
+            <div class="plan-section-title">
+                <h4>Chi nhánh & Trọng lượng</h4>
+            </div>
+
+            <div id="planRows" class="plan-rows">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    <div class="plan-row">
+                        <div>
+                            <label class="plan-label">Chi nhánh <span>*</span></label>
+                            <select asp-for="Items[@i].Type" class="plan-select branch-select">
+                                <option value="">-- Chọn chi nhánh --</option>
+                                @foreach (var b in branches)
+                                {
+                                    <option value="@b.CodeValue">@b.Description</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="plan-label">Trọng lượng (kg) <span>*</span></label>
+                            <input type="number" step="1" min="0"
+                                   name="Items[@i].WeightValue"
+                                   id="Items_@(i)__WeightValue"
+                                   value="@(Convert.ToInt32(Model.Items[i].WeightValue))"
+                                   class="plan-input weight-input"
+                                   inputmode="numeric"
+                                   placeholder="Nhập trọng lượng (kg)" />
+
+
+                        </div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" class="icon-btn add" title="Thêm dòng" onclick="planAddRow()">+</button>
+                            <button type="button" class="icon-btn remove" title="Xóa dòng" onclick="planRemoveRow(this)">−</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="plan-actions">
+            <button type="button" class="btn btn-cancel" onclick="_menu.ClosePopup?.()">Bỏ qua</button>
+            <button type="button" class="btn btn-save" onclick="_menu.OnSave()">Lưu</button>
+        </div>
+    </form>
+
+    <!-- Template row -->
+    <template id="planRowTemplate">
+        <div class="plan-row">
+            <div>
+                <label class="plan-label">Chi nhánh <span>*</span></label>
+                <select class="plan-select branch-select">
+                    <option value="">-- Chọn chi nhánh --</option>
+                    @foreach (var b in branches)
+                    {
+                        <option value="@b.CodeValue">@b.Description</option>
+                    }
+                </select>
+            </div>
+
+            <div>
+                <label class="plan-label">Trọng lượng (kg) <span>*</span></label>
+                <input type="number" step="1" min="0"
+                       class="plan-input weight-input"
+                       inputmode="numeric"
+                       placeholder="Nhập trọng lượng (kg)" />
+
+            </div>
+
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="icon-btn add" title="Thêm dòng" onclick="planAddRow()">+</button>
+                <button type="button" class="icon-btn remove" title="Xóa dòng" onclick="planRemoveRow(this)">−</button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        function planAddRow() {
+            const container = document.getElementById("planRows");
+            const tpl = document.getElementById("planRowTemplate");
+            container.appendChild(tpl.content.cloneNode(true));
+            planReindexRows();
+        }
+
+        function planRemoveRow(btn) {
+            const container = document.getElementById("planRows");
+            const rows = container.querySelectorAll(".plan-row");
+            if (rows.length <= 1) return; // giữ tối thiểu 1 dòng
+            const row = btn.closest(".plan-row");
+            if (row) row.remove();
+            planReindexRows();
+        }
+
+        function planReindexRows() {
+            const rows = document.querySelectorAll("#planRows .plan-row");
+            rows.forEach((row, i) => {
+                const select = row.querySelector("select.branch-select");
+                const input = row.querySelector("input[type='number']");
+
+                select.name = `Items[${i}].Type`;
+                select.id = `Items_${i}__Type`;
+
+                input.name = `Items[${i}].WeightValue`;
+                input.id = `Items_${i}__WeightValue`;
+            });
+        }
+
+        // Optional: chặn chọn trùng chi nhánh
+        document.addEventListener('change', function (e) {
+            if (!e.target.classList.contains('branch-select')) return;
+            const values = Array.from(document.querySelectorAll('.branch-select'))
+                .map(x => x.value).filter(v => v !== '');
+            const seen = new Set();
+            for (const v of values) {
+                if (seen.has(v)) {
+                    alert('Chi nhánh bị trùng, vui lòng chọn lại!');
+                    e.target.value = '';
+                    break;
+                }
+                seen.add(v);
+            }
+        });
+
+        planReindexRows();
+    </script>
+</div>

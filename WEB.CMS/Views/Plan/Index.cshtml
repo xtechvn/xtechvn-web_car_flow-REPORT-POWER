@@ -1,0 +1,74 @@
+﻿
+<style>
+    /* ===== Year Dropdown đẹp ===== */
+    #search_year {
+        width: 150px;
+        height: 40px;
+        padding: 0 36px 0 14px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        background-color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        cursor: pointer;
+        outline: none;
+        /* Ẩn arrow mặc định */
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        /* Arrow custom */
+        background-image: url("data:image/svg+xml;utf8,<svg fill='%236b7280' height='20' viewBox='0 0 20 20' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M5.5 7.5l4.5 4.5 4.5-4.5'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+    }
+
+        #search_year:hover {
+            border-color: #9ca3af;
+        }
+
+        #search_year:focus {
+            border-color: #84cc16;
+            box-shadow: 0 0 0 3px rgba(132,204,22,.25);
+        }
+
+</style>
+<main class="main-section">
+
+
+    <div class="table-head">
+        <a href="/" class="btn-back">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#344054" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+        </a>
+        <h2 class="table-title">Quản lý Kế Hoạch</h2>
+        <div class="table-search">
+            <select id="search_year"></select>
+
+            <button class="btn" onclick="_menu.ShowAddOrUpdate(0)"><span class="plus">✕</span> Thêm mới</button>
+        </div>
+    </div>
+    <div id="magnific-popup-small" class="popup-form  white-popup mfp-hide">
+        <div class="round_lighbox">
+            <div class="content_lightbox">
+                <div class="title-popup magnific-title" id="Data_Tile"></div>
+                <div class="form-user-modern  magnific-body" id="Data_Body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-wrapper simple-scrollbar ss-container" style="height: 310px;">
+        <div class="ss-wrapper">
+            <div class="ss-content" id="grid_data">
+            </div>
+        </div><div class="ss-scroll ss-hidden"></div>
+    </div>
+
+    <div id="dropdown-container"></div>
+
+</main>
+
+@section scripts {
+    <script type="text/javascript" src="~/modules/plan.js"></script>
+}

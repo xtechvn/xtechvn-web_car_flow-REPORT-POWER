@@ -2,6 +2,7 @@
 {
     public class AllCodeType
     {
+        public static string BRANCH = "BRANCH";
         public static string VEHICLE_STATUS = "VEHICLE_STATUS";//1
         public static string LOAD_TYPE = "LOAD_TYPE";//2
         public static string VEHICLEWEIGHING_TYPE = "VEHICLEWEIGHING_TYPE";//3

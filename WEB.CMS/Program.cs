@@ -44,6 +44,8 @@ builder.Services.AddSingleton<IAllCodeRepository, AllCodeRepository>();
 builder.Services.AddSingleton<IRoleRepository, RoleRepository>();
 builder.Services.AddSingleton<IDepartmentRepository, DepartmentRepository>();
 builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
+builder.Services.AddSingleton<IPlanRepository, PlanRepository>();
+
 builder.Services.AddSingleton<RedisConn>();
 builder.Services.AddSingleton<ManagementUser>();
 
