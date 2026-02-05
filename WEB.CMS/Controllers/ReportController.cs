@@ -76,6 +76,33 @@ namespace WEB.CMS.Controllers
             }
             return PartialView();
 
+        }  
+        public async Task<IActionResult> GetDataBieudo(string fromdate, string todate)
+        {
+            try
+            {
+                var date_time_fromdate = fromdate != null && fromdate != "" ? DateUtil.StringToDate(fromdate) : null;
+                var date_time_todate = todate != null && todate != "" ? DateUtil.StringToDate(todate) : null;
+
+                var data = await _reportRepository.GetSummaryVehicleBySite(date_time_fromdate, date_time_todate);
+                var datamodel = new
+                {
+                    labels = data.Select(s => s.TableName).ToArray(),
+                    weightValue=data.Select(s => s.WeightValue).ToArray(),
+                    totalWeightValue = data.Select(s => s.TotalTon).ToArray(),
+                };
+                return Ok(new
+                {
+                    isSuccess = true,
+                    data = datamodel
+                });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.InsertLogTelegram("ListCartoFactory - CarController: " + ex);
+            }
+            return PartialView();
+
         }
 
     }

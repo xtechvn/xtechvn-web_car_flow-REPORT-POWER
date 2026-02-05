@@ -11,5 +11,6 @@ namespace Entities.ViewModels
         public string TableName { get; set; }
         public double TotalCar { get; set; }
         public double TotalTon { get; set; }
+        public double WeightValue { get; set; }
     }
 }

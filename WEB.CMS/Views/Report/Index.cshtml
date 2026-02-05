@@ -456,102 +456,55 @@
             <div class="chart-header">
                 <div class="chart-title">So sánh Sản lượng theo Khu vực</div>
                 <div class="chart-legend">
-                    <div class="legend-item"><span class="dot dot-actual"></span> Thực tế</div>
-                    <div class="legend-item"><span class="dot dot-plan"></span> Kế hoạch</div>
+                    <div class="legend-item">
+                        <span class="dot dot-actual"></span> Thực tế
+                    </div>
+                    <div class="legend-item">
+                        <span class="dot dot-plan"></span> Kế hoạch
+                    </div>
                 </div>
             </div>
-            
             <div class="bar-chart-container">
-                <div style="width: 100%; display: flex; justify-content: space-around; height: 100%; align-items: flex-end;">
-                    <div style="text-align: center;">
-                        <div style="display: flex; align-items: flex-end; gap: 8px;">
-                            <div class="bar" style="height: 140px; background: var(--chart-bar-1);"></div>
-                            <div class="bar" style="height: 130px; background: var(--chart-bar-2);"></div>
-                        </div>
-                        <div class="bar-label">Miền Bắc</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="display: flex; align-items: flex-end; gap: 8px;">
-                            <div class="bar" style="height: 100px; background: var(--chart-bar-1);"></div>
-                            <div class="bar" style="height: 110px; background: var(--chart-bar-2);"></div>
-                        </div>
-                        <div class="bar-label">Miền Trung</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="display: flex; align-items: flex-end; gap: 8px;">
-                            <div class="bar" style="height: 160px; background: var(--chart-bar-1);"></div>
-                            <div class="bar" style="height: 170px; background: var(--chart-bar-2);"></div>
-                        </div>
-                        <div class="bar-label">Miền Nam</div>
-                    </div>
-                </div>
+                <canvas id="revenuChart" style="width: 100%; height: 100%;"></canvas>
             </div>
         </div>
-
+    
         <!-- Progress Chart -->
         <div class="chart-box">
             <div class="chart-header">
                 <div class="chart-title">Tỷ lệ Hoàn thành Vùng</div>
             </div>
-            
-            <div class="region-item">
-                <div class="region-header">
-                    <span>Miền Bắc</span>
-                    <strong>92%</strong>
-                </div>
-                <div class="region-bar-bg">
-                    <div class="region-bar-fill" style="width: 92%"></div>
-                </div>
+            <div id="region-progress-list">
+                <!-- Dynamic content will be loaded here by report.js -->
             </div>
-            
-            <div class="region-item">
-                <div class="region-header">
-                    <span>Miền Trung</span>
-                    <strong>105%</strong>
-                </div>
-                <div class="region-bar-bg">
-                    <div class="region-bar-fill" style="width: 100%"></div>
-                </div>
-            </div>
-            
-            <div class="region-item">
-                <div class="region-header">
-                    <span>Miền Nam</span>
-                    <strong>88%</strong>
-                </div>
-                <div class="region-bar-bg">
-                    <div class="region-bar-fill" style="width: 88%; background-color: var(--accent-yellow);"></div>
-                </div>
-            </div>
-            
-            <div style="margin-top: 20px; font-size: 13px; color: var(--text-secondary); font-style: italic; line-height: 1.5;">
-                Ghi chú: Miền Trung vượt chỉ tiêu do bổ sung các đơn hàng lẻ từ Hub Đà Nẵng.
-            </div>
+         
         </div>
     </div>
 
     <!-- Data Table -->
     <div class="table-section">
-      <!--  <div class="table-header-row">
-            <div class="chart-title">Chi tiết Sản lượng theo Tỉnh / Hub</div>
-            <a href="#" class="action-link">
+        <div class="table-header-row">
+            <div class="chart-title">Chi tiết Sản lượng theo nhà máy</div>
+           <!--  <a href="#" class="action-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
                 Tải Excel chi tiết
-            </a>
-        </div>-->
+            </a> -->
+        </div>
 
         <table class="custom-table" id="table-data">
-            
+            <!-- Table content loaded via Ajax -->
         </table>
     </div>
 
 </div>
 
 @section scripts {
+    <script type="text/javascript" src="~/lib/Chart/Chart.js"></script>
+    <script type="text/javascript" src="~/lib/Chart/Chart.PieceLabel.js"></script>
     <script src="~/modules/report.js"></script>
  
 }
