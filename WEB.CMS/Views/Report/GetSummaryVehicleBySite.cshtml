@@ -1,0 +1,30 @@
+﻿@using Entities.ViewModels;
+@{
+    Layout = null;
+}
+@model List<SummaryVehicleBySiteViewModel>
+<thead>
+    <tr>
+        <th>Nhà máy</th>
+        <th>THỰC XUẤT (TẤN)</th>
+        <th>Số xe </th>
+    </tr>
+</thead>
+<tbody>
+    @if (Model != null && Model.Count > 0)
+    {
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.TableName</td>
+                <td>@item.TotalTon</td>
+                <td>@item.TotalCar</td>
+
+            </tr>
+        }
+    }
+    else
+    {
+        <h5>Không có kết quả tìm kiếm</h5>
+    }
+</tbody>
