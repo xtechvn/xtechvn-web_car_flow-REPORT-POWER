@@ -18,10 +18,10 @@
         @foreach(var item in Model)
         {
             <tr>
-                <td><a href="/SummaryReport"></a> @item.TableName</td>
-                <td>@item.WeightValue</td>
-                <td>@item.TotalTon</td>
-                <td>@item.TotalCar</td>
+                <td>@item.TableName</td>
+                <td>@item.WeightValue.ToString("N3")</td>
+                <td>@item.TotalTon.ToString("N3")</td>
+                <td>@item.TotalCar.ToString("N0")</td>
 
             </tr>
         }

@@ -133,7 +133,7 @@ var _report = {
             labels: listLabel,
             datasets: [
                 {
-                    label: 'Kế hoạch',
+                    label: 'Kế hoạch(Tấn)',
                     data: weightValue,
                     backgroundColor: '#00e6ff',
                     borderColor: '#00e6ff',
@@ -141,7 +141,7 @@ var _report = {
                     barPercentage: 0.25
                 },
                 {
-                    label: 'Thực tế',
+                    label: 'Thực tế(Tấn)',
                     data: totalWeightValue,
                     backgroundColor: '#ffff00',
                     borderColor: '#ffff00',

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.ViewModels.Car
 {
-    public class CartoFactoryModel: VehicleInspection
+    public class CartoFactoryModel
     {
         public string LoadTypeName { get; set; }
         public string VehicleStatusName { get; set; }
@@ -23,7 +23,7 @@ namespace Entities.ViewModels.Car
         public string FullName { get; set; }
         public int TrangThai { get; set; }
         public int InspectionId { get; set; } 
-        public List<TroughWeight> ListTroughWeight { get; set; }
+        //public List<TroughWeight> ListTroughWeight { get; set; }
         public decimal VehicleWeightMax { get; set; }
         public string TroughTypes { get; set; }
         public decimal? TotalVehicleTroughWeight { get; set; }
