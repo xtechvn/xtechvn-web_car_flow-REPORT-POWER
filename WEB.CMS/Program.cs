@@ -49,7 +49,7 @@ builder.Services.AddSingleton<IPlanRepository, PlanRepository>();
 builder.Services.AddSingleton<IVehicleInspectionRepository, VehicleInspectionRepository>();
 builder.Services.AddSingleton<RedisConn>();
 builder.Services.AddSingleton<ManagementUser>();
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {

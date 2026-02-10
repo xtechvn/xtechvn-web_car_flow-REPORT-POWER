@@ -210,7 +210,7 @@
                         if ($menu.find(".extra-weight").length === 0) {
                             let $extra = $('<div class="extra-weight" style="margin:10px 0;">' +
                                 '<input type="number" class="weight-input" ' +
-                                'placeholder="Vui lòng nhập trọng lượng (kg)" ' +
+                                'placeholder="Vui lòng nhập trọng lượng (Tấn)" ' +
                                 'style="width:100%;padding:5px;" ' +
                                 'min="0" max="99999999" ' +
                                 'oninput="if(this.value.length>8)this.value=this.value.slice(0,8);" />' +
